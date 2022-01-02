@@ -1,0 +1,25 @@
+h1 {
+    color: red;
+}
+
+input[name=message] {
+    width: 80%;
+}
+
+.column {
+    float: left;
+}
+
+.left {
+    width: 25%;
+}
+
+.middle {
+    width: 37.5%;
+    float: left;
+}
+
+.right {
+    width: 37.5%;
+    float: left;
+}

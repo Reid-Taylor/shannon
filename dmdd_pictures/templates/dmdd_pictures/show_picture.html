@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.3.min.js"></script> -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_ROOT }}/cs/main.css" /> 
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+        <title>Reid's Project</title>
+    </head>
+    <body>
+        <center><strong>Hello there, {{ name }}!</strong> You have {{ remaining }} left of {{ total }} total images. </center>
+        <br>
+        <br>
+        <div class="column left">
+            <br>
+            <br>
+            <form method="POST" id="task-form">
+                {% csrf_token %}
+                <p>Does the pituitary gland appear to be deformed?</p>
+                <div>
+                    <input type="radio" id="deformed" name="mutated" value=True>
+                    <label for="deformed">Deformed</label>
+                </div>
+                <div>
+                    <input type="radio" id="goodform" name="mutated" value="False">
+                    <label for="goodform">Not Deformed</label>
+                </div>
+                <p>What slide number is closest to the center of the pituitary gland?</p>
+                &emsp;<select name="midSlide" id="midSlide">
+                    <option value="0750">750</option>
+                    <option value="0775">775</option>
+                    <option value="0800">800</option>
+                    <option value="0825">825</option>
+                    <option value="0850">850</option>
+                    <option value="0875">875</option>
+                    <option value="0900">900</option>
+                    <option value="0925">925</option>
+                    <option value="0950">950</option>
+                  </select>
+                <p>Is the beginning of the pituitary gland at the left side, the lower ranges, of the photos present?</p>
+                <div>
+                    <input type="radio" id="begPresent" name="left" value="True">
+                    <label for="begPresent">Present</label>
+                </div>
+                <div>
+                    <input type="radio" id="begAbsent" name="left" value="False">
+                    <label for="begAbsent">Absent</label>
+                </div>
+                <p>What slide number is closest to the beginning of the pituitary gland?</p>
+                &emsp;<select name="begSlide" id="begSlide">
+                    <option value="0750">750</option>
+                    <option value="0775">775</option>
+                    <option value="0800">800</option>
+                    <option value="0825">825</option>
+                    <option value="0850">850</option>
+                    <option value="0875">875</option>
+                    <option value="0900">900</option>
+                    <option value="0925">925</option>
+                    <option value="0950">950</option>
+                  </select>
+                <br>
+                <p>Is the ending of the pituitary gland at the right side, <br>
+                    the upper ranges, of the photos present?</p>
+                <div>
+                    <input type="radio" id="endPresent" name="right" value="True">
+                    <label for="endPresent">Present</label><br>
+                </div>
+                <div>
+                    <input type="radio" id="endAbsent" name="right" value="False">
+                    <label for="endAbsent">Absent</label>
+                </div>
+                <p>What slide number is closest to the ending of the pituitary gland?</p>
+                &emsp;<select name="endSlide" id="endSlide">
+                    <option value="0950">950</option>
+                    <option value="0925">925</option>
+                    <option value="0900">900</option>
+                    <option value="0875">875</option>
+                    <option value="0850">850</option>
+                    <option value="0825">825</option>
+                    <option value="0800">800</option>
+                    <option value="0775">775</option>
+                    <option value="0750">750</option>
+                  </select>
+                <br>
+                <br>
+                <input type="text" size='32pt' placeholder="Comments" name="task" id="task">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="column middle">
+            <p> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Gene: {{gene1}} || ID: {{id1}} || Slide: 
+            <select name="leftSlide" id="leftSlide" onchange='changeLevel(value)'>
+                <option value="0750">750</option>
+                <option value="0775">775</option>
+                <option value="0800">800</option>
+                <option value="0825">825</option>
+                <option value="0850">850</option>
+                <option value="0875">875</option>
+                <option value="0900">900</option>
+                <option value="0925">925</option>
+                <option value="0950">950</option>
+              </select></p>
+            
+            <img id="leftImage" src="{{ STATIC_ROOT }}/img/{{gene1}}/images/DMDD{{id1}}-{{slide1}}-{{coding1}}.jpeg" width="500" alt='My image'>
+        </div>
+        <div class="column right">
+            <p> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Gene: {{gene2}} || ID: {{id2}} || Slide:  
+                <select name="rightSlide" id="rightSlide" onchange='changeImage(value)'>
+                    <option value="0750">750</option>
+                    <option value="0775">775</option>
+                    <option value="0800">800</option>
+                    <option value="0825">825</option>
+                    <option value="0850">850</option>
+                    <option value="0875">875</option>
+                    <option value="0900">900</option>
+                    <option value="0925">925</option>
+                    <option value="0950">950</option>
+                  </select></p>
+            
+            <img id="rightImage" src="{{ STATIC_ROOT }}/img/{{gene2}}/images/DMDD{{id2}}-{{slide2}}-{{coding2}}.jpeg" width="500" alt='My image'>
+        </div>
+        <br>
+        <p id='gene' value="">{{ gene1 }}</p>
+        <p id='slide'>{{ slide1 }}</p>
+        <p id='identifier' value="">{{ id1 }}</p>
+        <p id='author' value="">{{ name }}</p>
+        <br>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" 
+              integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+                crossorigin="anonymous"></script>
+      
+        <script type="text/javascript">
+        $(document).on('submit','#task-form',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url: 'http://127.0.0.1:8000/api',
+                data:
+                {
+                    gene: document.getElementById('gene').innerHTML,
+                    identifier: document.getElementById('identifier').innerHTML,
+                    slide: document.getElementById('slide').innerHTML,
+                    imgsrc: document.getElementById('leftImage').src,
+                    mutated: document.getElementById('deformed').value,
+                    comment: document.getElementById("task").value,
+                    submission: Date.now(),
+                    author: document.getElementById('author').innerHTML,
+                    wildtype: document.getElementById('deformed').value,
+                    center: document.getElementById('midSlide').value,
+                    leftPresent: document.getElementById('begPresent').value,
+                    leftBeginning: document.getElementById('begSlide').value,
+                    rightPresent: document.getElementById('endPresent').value,
+                    rightBeginning: document.getElementById('endSlide').value,
+                },
+                success:function(){
+                      alert('Saved');
+                      window.location.reload();
+                        }
+                })
+            });
+        
+            function changeLevel(newVal) {
+                document.getElementById('leftImage').src="{{ STATIC_ROOT }}/img/{{gene1}}/images/DMDD{{id1}}-"+newVal+"-{{coding1}}.jpeg"
+            }
+            function changeImage(newVal) {
+                document.getElementById('rightImage').src="{{ STATIC_ROOT }}/img/{{gene2}}/images/DMDD{{id2}}-"+newVal+"-{{coding2}}.jpeg"
+            }
+        </script>
+    </body>
+</html>
